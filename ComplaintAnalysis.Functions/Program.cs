@@ -47,7 +47,25 @@ var host = new HostBuilder()
 
         // Register Entity Framework with SQLite
         var dbPath = configuration["LabelConfigurationDbPath"] ?? "labelconfig.db";
-        var connectionString = $"Data Source={dbPath}";
+        
+        // Ensure directory exists for the database file
+        var dbDirectory = Path.GetDirectoryName(dbPath);
+        if (!string.IsNullOrEmpty(dbDirectory) && !Directory.Exists(dbDirectory))
+        {
+            try
+            {
+                Directory.CreateDirectory(dbDirectory);
+            }
+            catch
+            {
+                // If directory creation fails, use just filename (current directory)
+                dbPath = Path.GetFileName(dbPath);
+            }
+        }
+        
+        // Use absolute path or relative path
+        var fullDbPath = Path.IsPathRooted(dbPath) ? dbPath : Path.Combine(AppContext.BaseDirectory, dbPath);
+        var connectionString = $"Data Source={fullDbPath}";
         
         services.AddDbContext<LabelConfigurationDbContext>(options =>
             options.UseSqlite(connectionString));

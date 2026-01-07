@@ -3,18 +3,18 @@
   "language": "en",
   "global": {
     "minConfidenceToEmit": 0.35,
-    "maxLabelsPerComplaint": 3,
+    "maxLabelsPerComplaint": 5,
     "negationWindowTokens": 4,
     "severity": {
       "high": {
         "sentiment": ["very_negative"],
         "criticalTerms": ["ruined", "unsafe", "inedible", "mold", "refund", "chargeback", "never again", "contaminated", "allergen", "rancid", "expired", "poison", "sick", "hospital"],
-        "criticalLabels": ["ProductQuality", "AllergenSafety", "Contamination", "ExpiredProduct"]
+        "criticalLabels": ["ProductQuality", "AllergenSafety", "Contamination", "ExpiredProduct", "ProductRecall", "IncorrectLabeling"]
       },
       "medium": {
         "sentiment": ["negative"],
         "criticalTerms": [],
-        "criticalLabels": ["DamagedPackage", "MissingItems", "DeliveredNotReceived", "Misdelivery", "WrongItem", "StaleProduct", "TemperatureDamage"]
+        "criticalLabels": ["DamagedPackage", "MissingItems", "DeliveredNotReceived", "Misdelivery", "WrongItem", "StaleProduct", "TemperatureDamage", "ProductDefect", "UnauthorizedCharge", "RefundNotReceived"]
       }
     }
   },
@@ -439,6 +439,732 @@
         { "t": "\\b(billing\\s+error|overcharg(ed)?|wrong\\s+price)\\b", "w": 4 }
       ],
       "exclusions": [],
+      "dominates": [],
+      "hardRules": []
+    },
+    {
+      "id": "WrongQuantity",
+      "displayName": "Wrong Quantity / Amount",
+      "priority": 92,
+      "threshold": 4,
+      "keywords": [
+        { "t": "quantity", "w": 2 },
+        { "t": "amount", "w": 2 },
+        { "t": "less", "w": 2 },
+        { "t": "more", "w": 2 },
+        { "t": "short", "w": 2 }
+      ],
+      "phrases": [
+        { "t": "wrong quantity", "w": 5 },
+        { "t": "received less", "w": 4 },
+        { "t": "not enough", "w": 3 },
+        { "t": "short on quantity", "w": 4 },
+        { "t": "ordered more", "w": 3 }
+      ],
+      "regex": [
+        { "t": "\\bwrong\\s+quantity\\b", "w": 5 },
+        { "t": "\\breceiv(ed)?\\s+(less|more|wrong\\s+amount)\\b", "w": 4 }
+      ],
+      "exclusions": ["MissingItems"],
+      "dominates": [],
+      "hardRules": []
+    },
+    {
+      "id": "WrongSize",
+      "displayName": "Wrong Size / Weight",
+      "priority": 88,
+      "threshold": 4,
+      "keywords": [
+        { "t": "size", "w": 2 },
+        { "t": "weight", "w": 2 },
+        { "t": "smaller", "w": 3 },
+        { "t": "larger", "w": 2 }
+      ],
+      "phrases": [
+        { "t": "wrong size", "w": 5 },
+        { "t": "wrong weight", "w": 4 },
+        { "t": "smaller than ordered", "w": 4 },
+        { "t": "different size", "w": 4 }
+      ],
+      "regex": [
+        { "t": "\\bwrong\\s+(size|weight)\\b", "w": 5 }
+      ],
+      "exclusions": ["WrongItem"],
+      "dominates": [],
+      "hardRules": []
+    },
+    {
+      "id": "WrongFlavor",
+      "displayName": "Wrong Flavor / Variety",
+      "priority": 87,
+      "threshold": 4,
+      "keywords": [
+        { "t": "flavor", "w": 3 },
+        { "t": "variety", "w": 2 },
+        { "t": "flavored", "w": 2 }
+      ],
+      "phrases": [
+        { "t": "wrong flavor", "w": 5 },
+        { "t": "different flavor", "w": 4 },
+        { "t": "not the flavor", "w": 4 }
+      ],
+      "regex": [
+        { "t": "\\bwrong\\s+flavor\\b", "w": 5 }
+      ],
+      "exclusions": ["WrongItem"],
+      "dominates": [],
+      "hardRules": []
+    },
+    {
+      "id": "ProductDescription",
+      "displayName": "Product Description Mismatch",
+      "priority": 93,
+      "threshold": 5,
+      "keywords": [
+        { "t": "description", "w": 3 },
+        { "t": "described", "w": 2 },
+        { "t": "advertised", "w": 2 },
+        { "t": "listed", "w": 2 }
+      ],
+      "phrases": [
+        { "t": "not as described", "w": 5 },
+        { "t": "different from description", "w": 5 },
+        { "t": "not what was advertised", "w": 5 },
+        { "t": "description was wrong", "w": 4 }
+      ],
+      "regex": [
+        { "t": "\\bnot\\s+(as|what)\\s+(described|advertis(ed|ed)|listed)\\b", "w": 5 }
+      ],
+      "exclusions": [],
+      "dominates": [],
+      "hardRules": []
+    },
+    {
+      "id": "ReturnRefund",
+      "displayName": "Return / Refund Request",
+      "priority": 65,
+      "threshold": 5,
+      "keywords": [
+        { "t": "return", "w": 3 },
+        { "t": "refund", "w": 4 },
+        { "t": "money back", "w": 4 },
+        { "t": "reimburse", "w": 3 }
+      ],
+      "phrases": [
+        { "t": "want a refund", "w": 5 },
+        { "t": "return this", "w": 4 },
+        { "t": "money back", "w": 4 },
+        { "t": "full refund", "w": 5 },
+        { "t": "return policy", "w": 3 }
+      ],
+      "regex": [
+        { "t": "\\b(refund|return|money\\s+back)\\b", "w": 4 }
+      ],
+      "exclusions": [],
+      "dominates": [],
+      "hardRules": []
+    },
+    {
+      "id": "ReturnProcess",
+      "displayName": "Return Process Issue",
+      "priority": 68,
+      "threshold": 5,
+      "keywords": [
+        { "t": "return", "w": 2 },
+        { "t": "difficult", "w": 2 },
+        { "t": "complicated", "w": 2 },
+        { "t": "process", "w": 2 }
+      ],
+      "phrases": [
+        { "t": "return process", "w": 4 },
+        { "t": "difficult to return", "w": 4 },
+        { "t": "return was complicated", "w": 4 },
+        { "t": "returning is hard", "w": 3 }
+      ],
+      "regex": [
+        { "t": "\\breturn\\b.*\\b(difficult|complicated|hard|process)\\b", "w": 4 }
+      ],
+      "exclusions": [],
+      "dominates": [],
+      "hardRules": []
+    },
+    {
+      "id": "SubscriptionIssue",
+      "displayName": "Subscription / Recurring Order Issue",
+      "priority": 72,
+      "threshold": 5,
+      "keywords": [
+        { "t": "subscription", "w": 4 },
+        { "t": "recurring", "w": 3 },
+        { "t": "auto", "w": 2 },
+        { "t": "cancel", "w": 2 }
+      ],
+      "phrases": [
+        { "t": "subscription issue", "w": 5 },
+        { "t": "can't cancel", "w": 4 },
+        { "t": "recurring order", "w": 4 },
+        { "t": "auto renew", "w": 3 }
+      ],
+      "regex": [
+        { "t": "\\b(subscription|recurring|auto\\s+renew)\\b", "w": 4 }
+      ],
+      "exclusions": [],
+      "dominates": [],
+      "hardRules": []
+    },
+    {
+      "id": "GiftIssue",
+      "displayName": "Gift / Gift Message Issue",
+      "priority": 55,
+      "threshold": 4,
+      "keywords": [
+        { "t": "gift", "w": 3 },
+        { "t": "gift message", "w": 4 },
+        { "t": "card", "w": 1 }
+      ],
+      "phrases": [
+        { "t": "gift message", "w": 4 },
+        { "t": "gift card missing", "w": 4 },
+        { "t": "was a gift", "w": 3 },
+        { "t": "gift order", "w": 3 }
+      ],
+      "regex": [
+        { "t": "\\bgift\\s+(message|card|order)\\b", "w": 4 }
+      ],
+      "exclusions": [],
+      "dominates": [],
+      "hardRules": []
+    },
+    {
+      "id": "PackagingIssue",
+      "displayName": "Packaging / Presentation Issue",
+      "priority": 50,
+      "threshold": 4,
+      "keywords": [
+        { "t": "packaging", "w": 3 },
+        { "t": "package", "w": 2 },
+        { "t": "presentation", "w": 2 },
+        { "t": "wrapped", "w": 2 }
+      ],
+      "phrases": [
+        { "t": "packaging was poor", "w": 4 },
+        { "t": "not well packaged", "w": 4 },
+        { "t": "packaging issue", "w": 4 }
+      ],
+      "regex": [
+        { "t": "\\bpackag(ing|ed)\\b.*\\b(poor|bad|issue)\\b", "w": 4 }
+      ],
+      "exclusions": ["DamagedPackage"],
+      "dominates": [],
+      "hardRules": []
+    },
+    {
+      "id": "WebsiteIssue",
+      "displayName": "Website / Technical Issue",
+      "priority": 58,
+      "threshold": 5,
+      "keywords": [
+        { "t": "website", "w": 3 },
+        { "t": "site", "w": 2 },
+        { "t": "online", "w": 2 },
+        { "t": "checkout", "w": 2 },
+        { "t": "cart", "w": 2 }
+      ],
+      "phrases": [
+        { "t": "website issue", "w": 4 },
+        { "t": "checkout problem", "w": 4 },
+        { "t": "site not working", "w": 4 },
+        { "t": "can't place order", "w": 4 }
+      ],
+      "regex": [
+        { "t": "\\b(website|site|checkout|cart)\\b.*\\b(issue|problem|error|not\\s+work(ing)?)\\b", "w": 4 }
+      ],
+      "exclusions": [],
+      "dominates": [],
+      "hardRules": []
+    },
+    {
+      "id": "PricingIssue",
+      "displayName": "Pricing / Promotion Issue",
+      "priority": 73,
+      "threshold": 5,
+      "keywords": [
+        { "t": "price", "w": 2 },
+        { "t": "pricing", "w": 3 },
+        { "t": "promotion", "w": 2 },
+        { "t": "discount", "w": 2 },
+        { "t": "coupon", "w": 2 }
+      ],
+      "phrases": [
+        { "t": "pricing issue", "w": 4 },
+        { "t": "promotion not applied", "w": 4 },
+        { "t": "discount didn't work", "w": 4 },
+        { "t": "coupon code", "w": 3 }
+      ],
+      "regex": [
+        { "t": "\\b(promotion|discount|coupon)\\b.*\\b(not\\s+appl(ied|y)|didn't\\s+work|issue)\\b", "w": 4 }
+      ],
+      "exclusions": ["BillingError"],
+      "dominates": [],
+      "hardRules": []
+    },
+    {
+      "id": "AccountIssue",
+      "displayName": "Account / Login Issue",
+      "priority": 56,
+      "threshold": 4,
+      "keywords": [
+        { "t": "account", "w": 2 },
+        { "t": "login", "w": 2 },
+        { "t": "password", "w": 2 },
+        { "t": "access", "w": 2 }
+      ],
+      "phrases": [
+        { "t": "account issue", "w": 4 },
+        { "t": "can't login", "w": 4 },
+        { "t": "account access", "w": 3 },
+        { "t": "password problem", "w": 3 }
+      ],
+      "regex": [
+        { "t": "\\b(account|login|password)\\b.*\\b(issue|problem|can't|unable)\\b", "w": 4 }
+      ],
+      "exclusions": [],
+      "dominates": [],
+      "hardRules": []
+    },
+    {
+      "id": "CommunicationIssue",
+      "displayName": "Communication / Notification Issue",
+      "priority": 62,
+      "threshold": 4,
+      "keywords": [
+        { "t": "email", "w": 2 },
+        { "t": "notification", "w": 3 },
+        { "t": "update", "w": 2 },
+        { "t": "contact", "w": 2 }
+      ],
+      "phrases": [
+        { "t": "no email", "w": 3 },
+        { "t": "didn't notify", "w": 4 },
+        { "t": "no notification", "w": 4 },
+        { "t": "communication issue", "w": 4 }
+      ],
+      "regex": [
+        { "t": "\\b(no|didn't|missing)\\s+(email|notification|update|communication)\\b", "w": 4 }
+      ],
+      "exclusions": [],
+      "dominates": [],
+      "hardRules": []
+    },
+    {
+      "id": "OrderCancellation",
+      "displayName": "Order Cancellation Issue",
+      "priority": 77,
+      "threshold": 5,
+      "keywords": [
+        { "t": "cancel", "w": 3 },
+        { "t": "cancellation", "w": 4 },
+        { "t": "cancelled", "w": 3 }
+      ],
+      "phrases": [
+        { "t": "can't cancel", "w": 4 },
+        { "t": "order was cancelled", "w": 4 },
+        { "t": "cancellation issue", "w": 4 },
+        { "t": "want to cancel", "w": 3 }
+      ],
+      "regex": [
+        { "t": "\\b(cancel(led|lation)?|can't\\s+cancel)\\b", "w": 4 }
+      ],
+      "exclusions": [],
+      "dominates": [],
+      "hardRules": []
+    },
+    {
+      "id": "ShippingCost",
+      "displayName": "Shipping Cost Issue",
+      "priority": 64,
+      "threshold": 4,
+      "keywords": [
+        { "t": "shipping", "w": 2 },
+        { "t": "delivery", "w": 2 },
+        { "t": "cost", "w": 2 },
+        { "t": "fee", "w": 2 }
+      ],
+      "phrases": [
+        { "t": "shipping cost", "w": 4 },
+        { "t": "delivery fee", "w": 3 },
+        { "t": "shipping too expensive", "w": 4 },
+        { "t": "free shipping", "w": 2 }
+      ],
+      "regex": [
+        { "t": "\\b(shipping|delivery)\\s+(cost|fee|charge|expensive)\\b", "w": 4 }
+      ],
+      "exclusions": [],
+      "dominates": [],
+      "hardRules": []
+    },
+    {
+      "id": "ProductAvailability",
+      "displayName": "Product Availability / Out of Stock",
+      "priority": 66,
+      "threshold": 4,
+      "keywords": [
+        { "t": "out of stock", "w": 4 },
+        { "t": "unavailable", "w": 3 },
+        { "t": "sold out", "w": 3 },
+        { "t": "backorder", "w": 3 }
+      ],
+      "phrases": [
+        { "t": "out of stock", "w": 4 },
+        { "t": "product unavailable", "w": 4 },
+        { "t": "sold out", "w": 3 },
+        { "t": "on backorder", "w": 3 }
+      ],
+      "regex": [
+        { "t": "\\b(out\\s+of\\s+stock|unavailable|sold\\s+out|backorder)\\b", "w": 4 }
+      ],
+      "exclusions": [],
+      "dominates": [],
+      "hardRules": []
+    },
+    {
+      "id": "ProductDefect",
+      "displayName": "Product Defect / Manufacturing Issue",
+      "priority": 118,
+      "threshold": 5,
+      "keywords": [
+        { "t": "defect", "w": 4 },
+        { "t": "defective", "w": 4 },
+        { "t": "manufacturing", "w": 3 },
+        { "t": "faulty", "w": 3 }
+      ],
+      "phrases": [
+        { "t": "product defect", "w": 5 },
+        { "t": "defective product", "w": 5 },
+        { "t": "manufacturing defect", "w": 5 },
+        { "t": "faulty item", "w": 4 }
+      ],
+      "regex": [
+        { "t": "\\b(defect(ive)?|manufacturing|faulty)\\b", "w": 4 }
+      ],
+      "exclusions": [],
+      "dominates": [],
+      "hardRules": []
+    },
+    {
+      "id": "IncorrectLabeling",
+      "displayName": "Incorrect Labeling / Ingredients",
+      "priority": 135,
+      "threshold": 4,
+      "keywords": [
+        { "t": "label", "w": 3 },
+        { "t": "labeling", "w": 3 },
+        { "t": "ingredients", "w": 3 },
+        { "t": "nutrition", "w": 2 }
+      ],
+      "phrases": [
+        { "t": "incorrect labeling", "w": 5 },
+        { "t": "wrong ingredients", "w": 5 },
+        { "t": "label doesn't match", "w": 4 },
+        { "t": "mislabeled", "w": 4 }
+      ],
+      "regex": [
+        { "t": "\\b(incorrect|wrong|mislabel(ed)?)\\s+(label(ing)?|ingredients)\\b", "w": 5 }
+      ],
+      "exclusions": [],
+      "dominates": [],
+      "hardRules": []
+    },
+    {
+      "id": "OrderModification",
+      "displayName": "Order Modification Issue",
+      "priority": 69,
+      "threshold": 4,
+      "keywords": [
+        { "t": "modify", "w": 3 },
+        { "t": "change", "w": 2 },
+        { "t": "edit", "w": 2 },
+        { "t": "update order", "w": 3 }
+      ],
+      "phrases": [
+        { "t": "can't modify order", "w": 4 },
+        { "t": "change my order", "w": 3 },
+        { "t": "order modification", "w": 4 },
+        { "t": "edit order", "w": 3 }
+      ],
+      "regex": [
+        { "t": "\\b(modify|change|edit)\\s+order\\b", "w": 4 }
+      ],
+      "exclusions": [],
+      "dominates": [],
+      "hardRules": []
+    },
+    {
+      "id": "ReplacementRequest",
+      "displayName": "Replacement Request",
+      "priority": 67,
+      "threshold": 4,
+      "keywords": [
+        { "t": "replacement", "w": 4 },
+        { "t": "replace", "w": 3 },
+        { "t": "exchange", "w": 3 }
+      ],
+      "phrases": [
+        { "t": "want replacement", "w": 4 },
+        { "t": "need replacement", "w": 4 },
+        { "t": "replace this", "w": 3 },
+        { "t": "exchange item", "w": 3 }
+      ],
+      "regex": [
+        { "t": "\\b(replacement|replace|exchange)\\b", "w": 4 }
+      ],
+      "exclusions": [],
+      "dominates": [],
+      "hardRules": []
+    },
+    {
+      "id": "WarrantyIssue",
+      "displayName": "Warranty / Guarantee Issue",
+      "priority": 71,
+      "threshold": 4,
+      "keywords": [
+        { "t": "warranty", "w": 4 },
+        { "t": "guarantee", "w": 3 },
+        { "t": "guaranteed", "w": 3 }
+      ],
+      "phrases": [
+        { "t": "warranty issue", "w": 4 },
+        { "t": "guarantee not honored", "w": 4 },
+        { "t": "guaranteed delivery", "w": 3 }
+      ],
+      "regex": [
+        { "t": "\\b(warranty|guarantee(d)?)\\b", "w": 4 }
+      ],
+      "exclusions": [],
+      "dominates": [],
+      "hardRules": []
+    },
+    {
+      "id": "ProductNotAsExpected",
+      "displayName": "Product Not As Expected",
+      "priority": 94,
+      "threshold": 5,
+      "keywords": [
+        { "t": "expected", "w": 2 },
+        { "t": "expectation", "w": 2 },
+        { "t": "disappointed", "w": 3 }
+      ],
+      "phrases": [
+        { "t": "not as expected", "w": 5 },
+        { "t": "didn't meet expectations", "w": 5 },
+        { "t": "below expectations", "w": 4 }
+      ],
+      "regex": [
+        { "t": "\\bnot\\s+as\\s+expected\\b", "w": 5 }
+      ],
+      "exclusions": [],
+      "dominates": [],
+      "hardRules": []
+    },
+    {
+      "id": "DuplicateCharge",
+      "displayName": "Duplicate Charge",
+      "priority": 76,
+      "threshold": 4,
+      "keywords": [
+        { "t": "duplicate", "w": 4 },
+        { "t": "charged twice", "w": 5 },
+        { "t": "double charge", "w": 4 }
+      ],
+      "phrases": [
+        { "t": "charged twice", "w": 5 },
+        { "t": "duplicate charge", "w": 5 },
+        { "t": "double charged", "w": 4 },
+        { "t": "charged multiple times", "w": 4 }
+      ],
+      "regex": [
+        { "t": "\\b(duplicate|twice|double)\\s+charg(e|ed)\\b", "w": 5 }
+      ],
+      "exclusions": [],
+      "dominates": [],
+      "hardRules": []
+    },
+    {
+      "id": "UnauthorizedCharge",
+      "displayName": "Unauthorized Charge",
+      "priority": 78,
+      "threshold": 4,
+      "keywords": [
+        { "t": "unauthorized", "w": 5 },
+        { "t": "didn't authorize", "w": 5 },
+        { "t": "fraud", "w": 4 }
+      ],
+      "phrases": [
+        { "t": "unauthorized charge", "w": 6 },
+        { "t": "didn't authorize", "w": 5 },
+        { "t": "fraudulent charge", "w": 5 }
+      ],
+      "regex": [
+        { "t": "\\b(unauthorized|didn't\\s+authorize|fraud)\\b", "w": 5 }
+      ],
+      "exclusions": [],
+      "dominates": [],
+      "hardRules": []
+    },
+    {
+      "id": "RefundNotReceived",
+      "displayName": "Refund Not Received",
+      "priority": 79,
+      "threshold": 5,
+      "keywords": [
+        { "t": "refund", "w": 3 },
+        { "t": "not received", "w": 3 },
+        { "t": "haven't received", "w": 4 }
+      ],
+      "phrases": [
+        { "t": "refund not received", "w": 6 },
+        { "t": "haven't received refund", "w": 5 },
+        { "t": "refund missing", "w": 4 }
+      ],
+      "regex": [
+        { "t": "\\brefund\\b.*\\bnot\\s+receiv(ed)?\\b", "w": 6 }
+      ],
+      "exclusions": [],
+      "dominates": [],
+      "hardRules": []
+    },
+    {
+      "id": "SlowResponse",
+      "displayName": "Slow Response Time",
+      "priority": 63,
+      "threshold": 4,
+      "keywords": [
+        { "t": "response", "w": 2 },
+        { "t": "respond", "w": 2 },
+        { "t": "slow", "w": 2 },
+        { "t": "took long", "w": 3 }
+      ],
+      "phrases": [
+        { "t": "slow response", "w": 4 },
+        { "t": "took too long", "w": 4 },
+        { "t": "response time", "w": 3 }
+      ],
+      "regex": [
+        { "t": "\\b(slow|took\\s+(too\\s+)?long)\\s+response\\b", "w": 4 }
+      ],
+      "exclusions": [],
+      "dominates": [],
+      "hardRules": []
+    },
+    {
+      "id": "IncorrectInformation",
+      "displayName": "Incorrect Information Provided",
+      "priority": 61,
+      "threshold": 4,
+      "keywords": [
+        { "t": "information", "w": 2 },
+        { "t": "info", "w": 2 },
+        { "t": "wrong info", "w": 4 },
+        { "t": "incorrect", "w": 2 }
+      ],
+      "phrases": [
+        { "t": "wrong information", "w": 4 },
+        { "t": "incorrect information", "w": 4 },
+        { "t": "misinformation", "w": 4 }
+      ],
+      "regex": [
+        { "t": "\\b(wrong|incorrect|mis)\\s+information\\b", "w": 4 }
+      ],
+      "exclusions": [],
+      "dominates": [],
+      "hardRules": []
+    },
+    {
+      "id": "ProductRecall",
+      "displayName": "Product Recall Concern",
+      "priority": 142,
+      "threshold": 3,
+      "keywords": [
+        { "t": "recall", "w": 5 },
+        { "t": "recalled", "w": 5 },
+        { "t": "safety recall", "w": 6 }
+      ],
+      "phrases": [
+        { "t": "product recall", "w": 6 },
+        { "t": "safety recall", "w": 6 },
+        { "t": "recalled product", "w": 5 }
+      ],
+      "regex": [
+        { "t": "\\b(recall(ed)?|safety\\s+recall)\\b", "w": 5 }
+      ],
+      "exclusions": [],
+      "dominates": [],
+      "hardRules": []
+    },
+    {
+      "id": "NutritionalConcern",
+      "displayName": "Nutritional / Dietary Concern",
+      "priority": 138,
+      "threshold": 4,
+      "keywords": [
+        { "t": "nutrition", "w": 3 },
+        { "t": "dietary", "w": 3 },
+        { "t": "calories", "w": 2 },
+        { "t": "sugar", "w": 2 }
+      ],
+      "phrases": [
+        { "t": "nutritional concern", "w": 4 },
+        { "t": "dietary issue", "w": 4 },
+        { "t": "nutrition label", "w": 3 }
+      ],
+      "regex": [
+        { "t": "\\b(nutrition(al)?|dietary)\\s+(concern|issue|label)\\b", "w": 4 }
+      ],
+      "exclusions": [],
+      "dominates": [],
+      "hardRules": []
+    },
+    {
+      "id": "OrganicCertification",
+      "displayName": "Organic / Certification Issue",
+      "priority": 137,
+      "threshold": 4,
+      "keywords": [
+        { "t": "organic", "w": 4 },
+        { "t": "certified", "w": 3 },
+        { "t": "certification", "w": 3 }
+      ],
+      "phrases": [
+        { "t": "not organic", "w": 4 },
+        { "t": "organic certification", "w": 5 },
+        { "t": "certified organic", "w": 4 }
+      ],
+      "regex": [
+        { "t": "\\b(organic|certif(ied|ication))\\b", "w": 4 }
+      ],
+      "exclusions": [],
+      "dominates": [],
+      "hardRules": []
+    },
+    {
+      "id": "QuantityMismatch",
+      "displayName": "Quantity Mismatch / Partial Fulfillment",
+      "priority": 91,
+      "threshold": 4,
+      "keywords": [
+        { "t": "quantity", "w": 2 },
+        { "t": "partial", "w": 2 },
+        { "t": "fulfillment", "w": 3 }
+      ],
+      "phrases": [
+        { "t": "partial fulfillment", "w": 4 },
+        { "t": "quantity mismatch", "w": 4 },
+        { "t": "partial order", "w": 3 }
+      ],
+      "regex": [
+        { "t": "\\b(partial|quantity\\s+mismatch)\\b", "w": 4 }
+      ],
+      "exclusions": ["MissingItems"],
       "dominates": [],
       "hardRules": []
     }
