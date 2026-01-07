@@ -6,14 +6,16 @@ public class AnalysisResult
 {
     public Sentiment Sentiment { get; private set; }
     public List<KeyPhrase> KeyPhrases { get; private set; }
+    public List<Entity> Entities { get; private set; }
 
-    private AnalysisResult(Sentiment sentiment, List<KeyPhrase> keyPhrases)
+    private AnalysisResult(Sentiment sentiment, List<KeyPhrase> keyPhrases, List<Entity> entities)
     {
         Sentiment = sentiment;
         KeyPhrases = keyPhrases;
+        Entities = entities;
     }
 
-    public static AnalysisResult Create(Sentiment sentiment, List<KeyPhrase> keyPhrases)
+    public static AnalysisResult Create(Sentiment sentiment, List<KeyPhrase> keyPhrases, List<Entity> entities)
     {
         if (sentiment == null)
         {
@@ -25,7 +27,12 @@ public class AnalysisResult
             throw new ArgumentNullException(nameof(keyPhrases));
         }
 
-        return new AnalysisResult(sentiment, keyPhrases);
+        if (entities == null)
+        {
+            throw new ArgumentNullException(nameof(entities));
+        }
+
+        return new AnalysisResult(sentiment, keyPhrases, entities);
     }
 }
 

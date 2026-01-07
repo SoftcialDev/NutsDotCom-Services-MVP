@@ -1,0 +1,446 @@
+{
+  "version": "2026-01-07",
+  "language": "en",
+  "global": {
+    "minConfidenceToEmit": 0.35,
+    "maxLabelsPerComplaint": 3,
+    "negationWindowTokens": 4,
+    "severity": {
+      "high": {
+        "sentiment": ["very_negative"],
+        "criticalTerms": ["ruined", "unsafe", "inedible", "mold", "refund", "chargeback", "never again", "contaminated", "allergen", "rancid", "expired", "poison", "sick", "hospital"],
+        "criticalLabels": ["ProductQuality", "AllergenSafety", "Contamination", "ExpiredProduct"]
+      },
+      "medium": {
+        "sentiment": ["negative"],
+        "criticalTerms": [],
+        "criticalLabels": ["DamagedPackage", "MissingItems", "DeliveredNotReceived", "Misdelivery", "WrongItem", "StaleProduct", "TemperatureDamage"]
+      }
+    }
+  },
+  "labels": [
+    {
+      "id": "LateDelivery",
+      "displayName": "Late Delivery",
+      "priority": 60,
+      "threshold": 4,
+      "keywords": [
+        { "t": "late", "w": 2 },
+        { "t": "delayed", "w": 2 },
+        { "t": "delay", "w": 1 },
+        { "t": "yesterday", "w": 1 }
+      ],
+      "phrases": [
+        { "t": "arrived late", "w": 3 },
+        { "t": "missed the delivery date", "w": 4 },
+        { "t": "was supposed to arrive", "w": 2 }
+      ],
+      "regex": [
+        { "t": "\\barriv(e|ed)\\b.*\\blate\\b", "w": 3 },
+        { "t": "\\bmiss(ed)?\\b.*\\bdelivery\\b", "w": 3 }
+      ],
+      "exclusions": ["DeliveredNotReceived"],
+      "dominates": [],
+      "hardRules": []
+    },
+    {
+      "id": "TrackingStalled",
+      "displayName": "Tracking Stalled / No Scans",
+      "priority": 80,
+      "threshold": 4,
+      "keywords": [
+        { "t": "tracking", "w": 1 },
+        { "t": "pending", "w": 2 },
+        { "t": "stuck", "w": 2 },
+        { "t": "scan", "w": 2 },
+        { "t": "scans", "w": 2 }
+      ],
+      "phrases": [
+        { "t": "tracking hasn't moved", "w": 4 },
+        { "t": "no scans", "w": 4 },
+        { "t": "no updates", "w": 3 },
+        { "t": "stuck in transit", "w": 4 }
+      ],
+      "regex": [
+        { "t": "\\bno\\s+scan(s)?\\b", "w": 4 },
+        { "t": "\\bno\\s+update(s)?\\b.*\\b(\\d+)\\s+day(s)?\\b", "w": 4 }
+      ],
+      "exclusions": [],
+      "dominates": ["LateDelivery"],
+      "hardRules": []
+    },
+    {
+      "id": "DamagedPackage",
+      "displayName": "Damaged Package",
+      "priority": 100,
+      "threshold": 4,
+      "keywords": [
+        { "t": "damaged", "w": 3 },
+        { "t": "crushed", "w": 3 },
+        { "t": "broken", "w": 3 },
+        { "t": "spilled", "w": 3 },
+        { "t": "open", "w": 1 },
+        { "t": "torn", "w": 2 }
+      ],
+      "phrases": [
+        { "t": "box arrived crushed", "w": 5 },
+        { "t": "package was opened", "w": 3 },
+        { "t": "item was broken", "w": 4 },
+        { "t": "bag was torn", "w": 3 },
+        { "t": "container was damaged", "w": 4 }
+      ],
+      "regex": [
+        { "t": "\\bbox\\b.*\\b(crush(ed)?|damage(d)?)\\b", "w": 4 },
+        { "t": "\\bpackage\\b.*\\b(open(ed)?|torn|ripped)\\b", "w": 4 }
+      ],
+      "exclusions": [],
+      "dominates": [],
+      "hardRules": []
+    },
+    {
+      "id": "DeliveredNotReceived",
+      "displayName": "Delivered but Not Received",
+      "priority": 110,
+      "threshold": 6,
+      "keywords": [
+        { "t": "delivered", "w": 2 },
+        { "t": "received", "w": 2 }
+      ],
+      "phrases": [
+        { "t": "delivered but not received", "w": 7 },
+        { "t": "says delivered", "w": 3 },
+        { "t": "marked as delivered", "w": 4 }
+      ],
+      "regex": [
+        { "t": "\\bdeliver(ed)?\\b.*\\bnot\\s+receiv(ed)?\\b", "w": 7 }
+      ],
+      "exclusions": ["LateDelivery"],
+      "dominates": ["LateDelivery", "TrackingStalled"],
+      "hardRules": [
+        {
+          "type": "all_of_phrases",
+          "phrases": ["delivered", "not received"],
+          "emitScore": 10
+        }
+      ]
+    },
+    {
+      "id": "MissingItems",
+      "displayName": "Missing Items / Incomplete Order",
+      "priority": 105,
+      "threshold": 5,
+      "keywords": [
+        { "t": "missing", "w": 3 },
+        { "t": "incomplete", "w": 3 },
+        { "t": "partial", "w": 2 },
+        { "t": "short", "w": 2 }
+      ],
+      "phrases": [
+        { "t": "missing items", "w": 5 },
+        { "t": "incomplete order", "w": 5 },
+        { "t": "did not receive", "w": 3 },
+        { "t": "only received", "w": 3 },
+        { "t": "order was incomplete", "w": 4 }
+      ],
+      "regex": [
+        { "t": "\\bmissing\\b.*\\bitem(s)?\\b", "w": 5 },
+        { "t": "\\bincomplete\\b.*\\border\\b", "w": 5 }
+      ],
+      "exclusions": ["DeliveredNotReceived"],
+      "dominates": [],
+      "hardRules": []
+    },
+    {
+      "id": "WrongItem",
+      "displayName": "Wrong Item / Wrong Product",
+      "priority": 95,
+      "threshold": 5,
+      "keywords": [
+        { "t": "wrong", "w": 3 },
+        { "t": "different", "w": 2 },
+        { "t": "incorrect", "w": 2 },
+        { "t": "mistake", "w": 2 }
+      ],
+      "phrases": [
+        { "t": "wrong item", "w": 5 },
+        { "t": "wrong product", "w": 5 },
+        { "t": "received wrong", "w": 4 },
+        { "t": "different product", "w": 4 },
+        { "t": "not what I ordered", "w": 5 },
+        { "t": "incorrect item", "w": 4 }
+      ],
+      "regex": [
+        { "t": "\\bwrong\\b.*\\b(item|product|order)\\b", "w": 5 },
+        { "t": "\\bnot\\s+what\\s+I\\s+order(ed)?\\b", "w": 5 }
+      ],
+      "exclusions": [],
+      "dominates": [],
+      "hardRules": []
+    },
+    {
+      "id": "ProductQuality",
+      "displayName": "Poor Product Quality",
+      "priority": 120,
+      "threshold": 5,
+      "keywords": [
+        { "t": "quality", "w": 2 },
+        { "t": "poor", "w": 3 },
+        { "t": "bad", "w": 2 },
+        { "t": "terrible", "w": 3 },
+        { "t": "awful", "w": 3 },
+        { "t": "disappointing", "w": 2 }
+      ],
+      "phrases": [
+        { "t": "poor quality", "w": 5 },
+        { "t": "bad quality", "w": 4 },
+        { "t": "quality is poor", "w": 5 },
+        { "t": "not good quality", "w": 4 },
+        { "t": "disappointed with quality", "w": 4 }
+      ],
+      "regex": [
+        { "t": "\\b(poor|bad|terrible|awful)\\b.*\\bquality\\b", "w": 5 }
+      ],
+      "exclusions": [],
+      "dominates": [],
+      "hardRules": []
+    },
+    {
+      "id": "StaleProduct",
+      "displayName": "Stale / Not Fresh",
+      "priority": 115,
+      "threshold": 5,
+      "keywords": [
+        { "t": "stale", "w": 4 },
+        { "t": "fresh", "w": 2 },
+        { "t": "old", "w": 2 },
+        { "t": "soft", "w": 2 },
+        { "t": "chewy", "w": 2 }
+      ],
+      "phrases": [
+        { "t": "not fresh", "w": 4 },
+        { "t": "tastes stale", "w": 5 },
+        { "t": "stale product", "w": 5 },
+        { "t": "old product", "w": 4 },
+        { "t": "not as fresh", "w": 4 }
+      ],
+      "regex": [
+        { "t": "\\b(stale|old)\\b.*\\b(product|item|nuts|chocolate|fruit)\\b", "w": 5 },
+        { "t": "\\bnot\\s+fresh\\b", "w": 4 }
+      ],
+      "exclusions": [],
+      "dominates": [],
+      "hardRules": []
+    },
+    {
+      "id": "ExpiredProduct",
+      "displayName": "Expired Product",
+      "priority": 130,
+      "threshold": 4,
+      "keywords": [
+        { "t": "expired", "w": 5 },
+        { "t": "expiration", "w": 4 },
+        { "t": "expiry", "w": 4 },
+        { "t": "past date", "w": 4 }
+      ],
+      "phrases": [
+        { "t": "expired product", "w": 6 },
+        { "t": "past expiration date", "w": 6 },
+        { "t": "expiration date passed", "w": 5 },
+        { "t": "out of date", "w": 4 }
+      ],
+      "regex": [
+        { "t": "\\bexpir(ed|ation|y)\\b", "w": 5 },
+        { "t": "\\bpast\\s+(expiration|expiry|best\\s+by)\\s+date\\b", "w": 6 }
+      ],
+      "exclusions": [],
+      "dominates": ["StaleProduct"],
+      "hardRules": []
+    },
+    {
+      "id": "RancidProduct",
+      "displayName": "Rancid / Off Taste",
+      "priority": 125,
+      "threshold": 4,
+      "keywords": [
+        { "t": "rancid", "w": 5 },
+        { "t": "off", "w": 3 },
+        { "t": "bad taste", "w": 4 },
+        { "t": "sour", "w": 2 },
+        { "t": "bitter", "w": 2 }
+      ],
+      "phrases": [
+        { "t": "tastes rancid", "w": 6 },
+        { "t": "rancid taste", "w": 5 },
+        { "t": "tastes off", "w": 4 },
+        { "t": "bad taste", "w": 4 },
+        { "t": "off flavor", "w": 4 }
+      ],
+      "regex": [
+        { "t": "\\b(rancid|off\\s+taste|bad\\s+taste)\\b", "w": 5 }
+      ],
+      "exclusions": [],
+      "dominates": [],
+      "hardRules": []
+    },
+    {
+      "id": "TemperatureDamage",
+      "displayName": "Temperature Damage / Melted",
+      "priority": 90,
+      "threshold": 4,
+      "keywords": [
+        { "t": "melted", "w": 4 },
+        { "t": "melt", "w": 3 },
+        { "t": "heat", "w": 2 },
+        { "t": "hot", "w": 2 },
+        { "t": "warm", "w": 2 }
+      ],
+      "phrases": [
+        { "t": "chocolate melted", "w": 5 },
+        { "t": "melted chocolate", "w": 5 },
+        { "t": "damaged by heat", "w": 4 },
+        { "t": "too hot", "w": 3 },
+        { "t": "arrived warm", "w": 3 }
+      ],
+      "regex": [
+        { "t": "\\b(melt(ed)?|heat\\s+damage)\\b", "w": 4 },
+        { "t": "\\bchocolate\\b.*\\b(melt(ed)?|mushy)\\b", "w": 5 }
+      ],
+      "exclusions": [],
+      "dominates": [],
+      "hardRules": []
+    },
+    {
+      "id": "AllergenSafety",
+      "displayName": "Allergen / Safety Concern",
+      "priority": 140,
+      "threshold": 3,
+      "keywords": [
+        { "t": "allergen", "w": 6 },
+        { "t": "allergy", "w": 5 },
+        { "t": "allergic", "w": 5 },
+        { "t": "unsafe", "w": 5 },
+        { "t": "safety", "w": 4 }
+      ],
+      "phrases": [
+        { "t": "allergen concern", "w": 6 },
+        { "t": "allergic reaction", "w": 6 },
+        { "t": "unsafe to eat", "w": 5 },
+        { "t": "safety concern", "w": 5 },
+        { "t": "contains allergen", "w": 5 }
+      ],
+      "regex": [
+        { "t": "\\b(allergen|allergy|allergic)\\b", "w": 5 },
+        { "t": "\\bunsafe\\b.*\\b(eat|consume|food)\\b", "w": 5 }
+      ],
+      "exclusions": [],
+      "dominates": [],
+      "hardRules": []
+    },
+    {
+      "id": "Contamination",
+      "displayName": "Contamination / Foreign Object",
+      "priority": 145,
+      "threshold": 3,
+      "keywords": [
+        { "t": "contaminated", "w": 6 },
+        { "t": "contamination", "w": 6 },
+        { "t": "foreign", "w": 4 },
+        { "t": "object", "w": 3 },
+        { "t": "hair", "w": 3 },
+        { "t": "bug", "w": 4 },
+        { "t": "insect", "w": 4 }
+      ],
+      "phrases": [
+        { "t": "foreign object", "w": 6 },
+        { "t": "found in product", "w": 4 },
+        { "t": "contaminated product", "w": 6 },
+        { "t": "something in", "w": 3 }
+      ],
+      "regex": [
+        { "t": "\\b(contaminat(ed|ion)|foreign\\s+object)\\b", "w": 6 },
+        { "t": "\\b(hair|bug|insect|piece)\\s+(in|inside|found)\\b", "w": 5 }
+      ],
+      "exclusions": [],
+      "dominates": [],
+      "hardRules": []
+    },
+    {
+      "id": "Misdelivery",
+      "displayName": "Wrong Address / Misdelivery",
+      "priority": 85,
+      "threshold": 5,
+      "keywords": [
+        { "t": "wrong address", "w": 5 },
+        { "t": "wrong location", "w": 4 },
+        { "t": "misdelivered", "w": 5 },
+        { "t": "delivered to wrong", "w": 5 }
+      ],
+      "phrases": [
+        { "t": "wrong address", "w": 5 },
+        { "t": "delivered to wrong address", "w": 6 },
+        { "t": "misdelivered", "w": 5 },
+        { "t": "sent to wrong", "w": 4 }
+      ],
+      "regex": [
+        { "t": "\\bwrong\\s+address\\b", "w": 5 },
+        { "t": "\\bdeliver(ed)?\\s+to\\s+wrong\\b", "w": 5 }
+      ],
+      "exclusions": ["DeliveredNotReceived"],
+      "dominates": [],
+      "hardRules": []
+    },
+    {
+      "id": "CustomerService",
+      "displayName": "Poor Customer Service",
+      "priority": 70,
+      "threshold": 5,
+      "keywords": [
+        { "t": "service", "w": 2 },
+        { "t": "rude", "w": 3 },
+        { "t": "unhelpful", "w": 3 },
+        { "t": "unresponsive", "w": 3 },
+        { "t": "ignored", "w": 3 }
+      ],
+      "phrases": [
+        { "t": "poor service", "w": 4 },
+        { "t": "bad customer service", "w": 5 },
+        { "t": "rude service", "w": 4 },
+        { "t": "unhelpful service", "w": 4 },
+        { "t": "no response", "w": 3 }
+      ],
+      "regex": [
+        { "t": "\\b(poor|bad|terrible|rude)\\s+service\\b", "w": 4 },
+        { "t": "\\b(unresponsive|ignored|no\\s+response)\\b", "w": 3 }
+      ],
+      "exclusions": [],
+      "dominates": [],
+      "hardRules": []
+    },
+    {
+      "id": "BillingError",
+      "displayName": "Billing / Payment Error",
+      "priority": 75,
+      "threshold": 5,
+      "keywords": [
+        { "t": "billing", "w": 3 },
+        { "t": "charged", "w": 2 },
+        { "t": "overcharged", "w": 4 },
+        { "t": "wrong price", "w": 4 },
+        { "t": "payment", "w": 2 }
+      ],
+      "phrases": [
+        { "t": "billing error", "w": 5 },
+        { "t": "overcharged", "w": 4 },
+        { "t": "wrong price", "w": 4 },
+        { "t": "charged incorrectly", "w": 4 },
+        { "t": "payment issue", "w": 3 }
+      ],
+      "regex": [
+        { "t": "\\b(billing\\s+error|overcharg(ed)?|wrong\\s+price)\\b", "w": 4 }
+      ],
+      "exclusions": [],
+      "dominates": [],
+      "hardRules": []
+    }
+  ]
+}

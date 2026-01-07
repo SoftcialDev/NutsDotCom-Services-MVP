@@ -40,6 +40,11 @@ public class ProcessComplaintUseCase
             .Where(kp => kp.ConfidenceScore >= confidenceThreshold)
             .ToList();
 
+        // Filter entities by confidence threshold
+        var filteredEntities = analysisResult.Entities
+            .Where(e => e.ConfidenceScore >= confidenceThreshold)
+            .ToList();
+
         // Map to response DTO
         var response = new ComplaintAnalysisResponse
         {
@@ -51,6 +56,14 @@ public class ProcessComplaintUseCase
                 {
                     Text = kp.Text,
                     ConfidenceScore = kp.ConfidenceScore
+                })
+                .ToList(),
+            Entities = filteredEntities
+                .Select(e => new EntityDto
+                {
+                    Text = e.Text,
+                    Category = e.Category,
+                    ConfidenceScore = e.ConfidenceScore
                 })
                 .ToList()
         };

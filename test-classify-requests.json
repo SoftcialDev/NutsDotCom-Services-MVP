@@ -1,0 +1,101 @@
+{
+  "testRequests": [
+    {
+      "name": "Late Delivery",
+      "request": {
+        "complaint": "My order was supposed to arrive yesterday but it still hasn't shown up. The delivery was delayed and I'm very frustrated.",
+        "sentiment": "negative",
+        "keyPhrases": ["late delivery", "delayed"],
+        "entities": null
+      }
+    },
+    {
+      "name": "Tracking Stalled",
+      "request": {
+        "complaint": "The tracking information hasn't moved in 5 days. There are no scans and no updates. The package seems stuck in transit.",
+        "sentiment": "negative",
+        "keyPhrases": ["tracking", "no scans", "stuck"],
+        "entities": null
+      }
+    },
+    {
+      "name": "Damaged Package",
+      "request": {
+        "complaint": "The box arrived completely crushed and the item inside was broken. The package was damaged during shipping.",
+        "sentiment": "negative",
+        "keyPhrases": ["damaged", "crushed", "broken"],
+        "entities": null
+      }
+    },
+    {
+      "name": "Delivered Not Received",
+      "request": {
+        "complaint": "The tracking says delivered but I did not receive the package. It says delivered but not received at my address.",
+        "sentiment": "negative",
+        "keyPhrases": ["delivered", "not received"],
+        "entities": null
+      }
+    },
+    {
+      "name": "Complex Case - Multiple Issues",
+      "request": {
+        "complaint": "My package was supposed to arrive last week but tracking shows it was delivered. However, I never received it and the box was also damaged when it supposedly arrived. The tracking hasn't moved in days.",
+        "sentiment": "negative",
+        "keyPhrases": ["delivered", "not received", "damaged", "tracking"],
+        "entities": [
+          {
+            "text": "package",
+            "category": "Product",
+            "confidenceScore": 0.95
+          }
+        ]
+      }
+    },
+    {
+      "name": "Negation Test - Should NOT Match",
+      "request": {
+        "complaint": "I did not experience any delays. The package was not late and arrived on time. There were no issues with delivery.",
+        "sentiment": "positive",
+        "keyPhrases": ["on time", "no issues"],
+        "entities": null
+      }
+    },
+    {
+      "name": "High Severity - Critical Terms",
+      "request": {
+        "complaint": "This is completely unsafe and inedible. The product was ruined and I demand a refund immediately. Never again will I order from you. This is a chargeback situation.",
+        "sentiment": "very_negative",
+        "keyPhrases": ["unsafe", "inedible", "ruined", "refund", "chargeback"],
+        "entities": null
+      }
+    },
+    {
+      "name": "Medium Severity - Critical Labels",
+      "request": {
+        "complaint": "The package was damaged when it arrived. The box was crushed and items were broken inside.",
+        "sentiment": "negative",
+        "keyPhrases": ["damaged", "crushed", "broken"],
+        "entities": null
+      }
+    },
+    {
+      "name": "With URLs and Tracking IDs (Testing Cleanup)",
+      "request": {
+        "complaint": "My order #ABC12345 was supposed to arrive but tracking at https://tracking.example.com/TRACK-789 shows it's stuck. The ORDER-456 hasn't moved in days 😞",
+        "sentiment": "negative",
+        "keyPhrases": ["stuck", "tracking"],
+        "entities": null
+      }
+    },
+    {
+      "name": "With Contractions (Testing Normalization)",
+      "request": {
+        "complaint": "I didn't receive my package. It wasn't delivered on time. I can't believe this happened. They won't help me.",
+        "sentiment": "negative",
+        "keyPhrases": ["not delivered", "not received"],
+        "entities": null
+      }
+    }
+  ]
+}
+

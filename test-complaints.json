@@ -59,7 +59,146 @@
     {
       "name": "Negative - Product Defect",
       "text": "The item I received is defective and doesn't work at all. I've tried everything to get it functioning but it appears to be a manufacturing defect. I need a replacement or refund as soon as possible. This is very inconvenient as I needed this item for an important project."
+    },
+    {
+      "name": "Negative - Late Delivery (Nuts.com)",
+      "text": "I paid for guaranteed Tuesday delivery. My order was supposed to arrive yesterday but it still hasn't shown up. The delivery was delayed and I'm very frustrated. This was supposed to be a gift for someone special."
+    },
+    {
+      "name": "Negative - Tracking Stalled (Nuts.com)",
+      "text": "I paid for guaranteed Tuesday delivery. Tracking has been 'Pending' for 3 days with no scans. Nobody notified me. This was a gift. The tracking information hasn't moved in days and there are no updates."
+    },
+    {
+      "name": "Negative - Damaged Package (Nuts.com)",
+      "text": "The box arrived completely crushed and the almonds inside were spilled everywhere. The package was damaged during shipping and the container was broken. Some items were lost due to the damage."
+    },
+    {
+      "name": "Negative - Delivered Not Received (Nuts.com)",
+      "text": "The tracking says delivered but I did not receive the package. It says delivered but not received at my address. I checked with neighbors and the package is nowhere to be found."
+    },
+    {
+      "name": "Negative - Missing Items (Nuts.com)",
+      "text": "My order was incomplete. I ordered 5 items but only received 3. The missing items were the chocolate covered almonds and the cashews. The order was incomplete and I'm missing half of what I paid for."
+    },
+    {
+      "name": "Negative - Wrong Item (Nuts.com)",
+      "text": "I ordered salted pistachios but received unsalted ones instead. This is not what I ordered. The product is different from what I selected. I need the correct item or a refund."
+    },
+    {
+      "name": "Negative - Poor Product Quality (Nuts.com)",
+      "text": "The quality of the nuts I received is terrible. The quality is poor and not what I expected. I'm very disappointed with the quality. The nuts are not good quality at all."
+    },
+    {
+      "name": "Negative - Stale Product (Nuts.com)",
+      "text": "The cashews I received are stale and not fresh. They taste stale and have a soft texture. The product is old and definitely not fresh. I expected fresh nuts but got stale ones instead."
+    },
+    {
+      "name": "Negative - Expired Product (Nuts.com)",
+      "text": "The chocolate I received is expired! The expiration date passed last month. The product is past expiration date and should not have been sent. This is a serious issue - expired food products."
+    },
+    {
+      "name": "Negative - Rancid Product (Nuts.com)",
+      "text": "The walnuts I received taste rancid and have an off flavor. The taste is completely off and the nuts are rancid. This is inedible and has a bad taste. I cannot eat these."
+    },
+    {
+      "name": "Negative - Melted Chocolate (Nuts.com)",
+      "text": "The chocolate covered pretzels arrived completely melted. The chocolate was melted and mushy when I opened the package. It was damaged by heat during shipping. The package was warm when it arrived."
+    },
+    {
+      "name": "Negative - Allergen Concern (Nuts.com)",
+      "text": "I have a severe peanut allergy and ordered products that should be peanut-free. However, I'm concerned about cross-contamination and allergen safety. The packaging doesn't clearly state if it's processed in a facility with peanuts. This is an allergen concern."
+    },
+    {
+      "name": "Negative - Contamination (Nuts.com)",
+      "text": "I found a foreign object in my bag of almonds. There was a piece of plastic and what looks like a hair inside the package. The product appears to be contaminated. I found something in the product that shouldn't be there."
+    },
+    {
+      "name": "Negative - Wrong Address (Nuts.com)",
+      "text": "My package was delivered to the wrong address. The tracking shows it was delivered but to a completely different location. It was misdelivered to the wrong address. I never received it because it went to the wrong place."
+    },
+    {
+      "name": "Negative - Poor Customer Service (Nuts.com)",
+      "text": "I've tried contacting customer service multiple times but received no response. The service is terrible and unhelpful. When I finally got through, the representative was rude and unresponsive. This is poor customer service."
+    },
+    {
+      "name": "Negative - Billing Error (Nuts.com)",
+      "text": "I was overcharged for my order. The price on the website was $29.99 but I was charged $39.99. This is a billing error and I was charged incorrectly. I need a refund for the difference."
+    },
+    {
+      "name": "Negative - Multiple Issues (Nuts.com)",
+      "text": "My order arrived late, the box was damaged, and the chocolate was melted. The package was crushed, items were missing, and the product quality was poor. This is completely unacceptable."
+    },
+    {
+      "name": "Negative - Very Negative with Critical Terms (Nuts.com)",
+      "text": "This is completely unsafe and inedible. The product was ruined and I demand a refund immediately. Never again will I order from you. This is a chargeback situation. The food was contaminated and made me sick."
+    },
+    {
+      "name": "Negative - Expired and Contaminated (Nuts.com)",
+      "text": "The dried fruit I received was expired and I found mold on some pieces. The expiration date passed weeks ago and the product is contaminated. This is unsafe to eat and completely inedible."
+    },
+    {
+      "name": "Negative - Allergen Reaction (Nuts.com)",
+      "text": "I had an allergic reaction after eating your product. The packaging didn't clearly list all ingredients and I'm concerned about allergen safety. This is a serious allergen concern and could have been much worse."
+    },
+    {
+      "name": "Negative - High Severity Multiple Issues (Nuts.com)",
+      "text": "The product was expired, tasted rancid, and I found a foreign object inside. This is completely unsafe, inedible, and contaminated. I demand a full refund and will never order again. This is unacceptable for food products."
+    },
+    {
+      "name": "Negative - Temperature Damage Multiple Items (Nuts.com)",
+      "text": "My entire order arrived warm and the chocolate items were completely melted. The chocolate covered almonds, pretzels, and fudge were all damaged by heat. The package was left in direct sunlight and everything melted."
+    },
+    {
+      "name": "Negative - Wrong Items Multiple (Nuts.com)",
+      "text": "I ordered 3 different items but received completely wrong products. I got salted instead of unsalted, milk chocolate instead of dark, and the wrong size. None of the items match what I ordered."
+    },
+    {
+      "name": "Negative - Tracking No Updates Extended (Nuts.com)",
+      "text": "My tracking hasn't moved in 7 days. There have been no scans and no updates for over a week. The package seems stuck in transit with no tracking information. I have no idea where my order is."
+    },
+    {
+      "name": "Negative - Delivered Not Received Complex (Nuts.com)",
+      "text": "The tracking says my package was delivered yesterday but I did not receive it. I checked with neighbors, my mailbox, and front door. It says delivered but not received. This was an expensive gift order."
+    },
+    {
+      "name": "Negative - Stale Multiple Products (Nuts.com)",
+      "text": "All the nuts I received are stale - the almonds, cashews, and walnuts all taste old and not fresh. The products are stale and have been sitting for too long. Nothing is fresh in my order."
+    },
+    {
+      "name": "Negative - Quality and Service Combined (Nuts.com)",
+      "text": "The product quality is poor and when I tried to contact customer service, they were unhelpful and rude. The nuts are stale, the service is terrible, and I'm very disappointed with this experience."
+    },
+    {
+      "name": "Negative - Billing and Delivery Issues (Nuts.com)",
+      "text": "I was charged the wrong price and my order arrived late. The billing error shows I was overcharged, and the delivery was delayed by 5 days. This is frustrating on multiple levels."
+    },
+    {
+      "name": "Negative - Missing Items and Wrong Address (Nuts.com)",
+      "text": "My order was incomplete with missing items, and it was also delivered to the wrong address initially. I'm missing 2 items from my order and had to wait extra time because of the misdelivery."
+    },
+    {
+      "name": "Negative - Product Quality and Expiration (Nuts.com)",
+      "text": "The product quality is terrible and some items are expired. The nuts are stale, the quality is poor, and the chocolate has passed its expiration date. This is completely unacceptable."
+    },
+    {
+      "name": "Negative - Rancid and Contamination (Nuts.com)",
+      "text": "The nuts taste rancid and I found a foreign object in the package. The product has an off taste and appears to be contaminated. This is unsafe and inedible."
+    },
+    {
+      "name": "Negative - Allergen and Wrong Item (Nuts.com)",
+      "text": "I received the wrong product and I'm concerned about allergen safety. The item I got contains ingredients I'm allergic to, and it's not what I ordered. This is a serious allergen concern."
+    },
+    {
+      "name": "Negative - Temperature Damage and Late Delivery (Nuts.com)",
+      "text": "My order arrived late and the chocolate was completely melted. The delivery was delayed and the product was damaged by heat. Everything arrived warm and the chocolate items are ruined."
+    },
+    {
+      "name": "Negative - Customer Service Unresponsive (Nuts.com)",
+      "text": "I've sent multiple emails and called several times but customer service is completely unresponsive. No one has responded to my inquiries. The service is terrible and I feel ignored."
+    },
+    {
+      "name": "Negative - Complex Multi-Issue Complaint (Nuts.com)",
+      "text": "My order was supposed to arrive last Tuesday but tracking shows it was delivered to the wrong address. When I finally got it, the box was crushed, items were missing, the chocolate was melted, and the nuts were stale. The product quality is poor, customer service is unhelpful, and I was overcharged. This is completely unacceptable."
     }
   ]
 }
-
