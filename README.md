@@ -60,20 +60,92 @@ Update `local.settings.json` with your Azure Language Service credentials:
 ## Running Locally
 
 1. Restore packages:
-   ```bash
+   ```powershell
    dotnet restore
    ```
 
 2. Build the solution:
-   ```bash
+   ```powershell
    dotnet build
    ```
 
 3. Run the Azure Function:
-   ```bash
+   ```powershell
    cd ComplaintAnalysis.Functions
    func start
    ```
+
+## Deployment
+
+### GitHub Actions CI/CD
+
+The project includes a GitHub Actions workflow for automated deployment to Azure Functions.
+
+**Workflow File**: `.github/workflows/dev_compaint-analysis(staging).yml`
+
+**Trigger**: 
+- Automatically on push to `Dev` branch
+- Manual trigger via GitHub Actions UI
+
+**Deployment Target**: 
+- Azure Function App: `complaint-analysis`
+- Slot: `staging`
+
+### Required GitHub Secrets
+
+For the workflow to deploy successfully, you need the following secrets configured in your GitHub repository:
+
+- `AZUREAPPSERVICE_PUBLISHPROFILE_1D809FB594894F1895B8786273E77F6E` - Publish profile from the **staging slot**
+
+### Getting the Staging Publish Profile
+
+To get the publish profile for the staging slot, run:
+
+```powershell
+az functionapp deployment list-publishing-profiles `
+  --name complaint-analysis `
+  --resource-group YOUR_RESOURCE_GROUP `
+  --slot staging `
+  --xml
+```
+
+Copy the entire XML output and update the GitHub secret.
+
+### Manual Deployment
+
+You can also deploy manually using Azure Functions Core Tools:
+
+```powershell
+# Navigate to Functions project
+cd ComplaintAnalysis.Functions
+
+# Login to Azure
+az login
+
+# Deploy to staging slot
+func azure functionapp publish complaint-analysis --slot staging
+```
+
+Or using ZIP deployment:
+
+```powershell
+# Build and publish
+dotnet publish ComplaintAnalysis.Functions/ComplaintAnalysis.Functions.csproj -c Release -o ./publish
+
+# Create ZIP
+Compress-Archive -Path ./publish/* -DestinationPath functionapp.zip -Force
+
+# Deploy ZIP to staging slot
+az functionapp deployment source config-zip `
+  --resource-group YOUR_RESOURCE_GROUP `
+  --name complaint-analysis `
+  --slot staging `
+  --src functionapp.zip
+```
+
+### Azure Setup
+
+For initial Azure setup and configuration, see `AZURE_SETUP.md` for detailed PowerShell commands to create all required Azure resources.
 
 ## Project Structure
 
