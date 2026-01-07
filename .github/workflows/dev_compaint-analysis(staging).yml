@@ -43,4 +43,5 @@ jobs:
           app-name: 'complaint-analysis'
           slot-name: 'staging'
           package: './output'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_1D809FB594894F1895B8786273E77F6E }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
+
