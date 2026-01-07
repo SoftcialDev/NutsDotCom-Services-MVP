@@ -8,7 +8,8 @@ public class Sentiment
     {
         "Positive",
         "Negative",
-        "Neutral"
+        "Neutral",
+        "Mixed"
     };
 
     private Sentiment(string label)
@@ -28,7 +29,7 @@ public class Sentiment
         if (!ValidLabels.Contains(capitalizedLabel))
         {
             throw new ArgumentException(
-                $"Invalid sentiment label: {label}. Valid labels are: Positive, Negative, Neutral.",
+                $"Invalid sentiment label: {label}. Valid labels are: Positive, Negative, Neutral, Mixed.",
                 nameof(label)
             );
         }

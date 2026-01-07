@@ -47,7 +47,7 @@ Update `local.settings.json` with your Azure Language Service credentials:
 {
   "requestId": "guid",
   "timestamp": "2024-01-15T10:30:00Z",
-  "sentiment": "Positive" | "Negative" | "Neutral",
+  "sentiment": "Positive" | "Negative" | "Neutral" | "Mixed",
   "keyPhrases": [
     {
       "text": "key phrase",
@@ -98,7 +98,7 @@ ComplaintAnalysisService/
 
 ## Features
 
-- ✅ Sentiment analysis (Positive, Negative, Neutral)
+- ✅ Sentiment analysis (Positive, Negative, Neutral, Mixed)
 - ✅ Key phrase extraction
 - ✅ Confidence-based filtering for key phrases
 - ✅ Comprehensive logging
