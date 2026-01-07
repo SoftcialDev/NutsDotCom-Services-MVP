@@ -49,21 +49,28 @@
       "priority": 80,
       "threshold": 4,
       "keywords": [
-        { "t": "tracking", "w": 1 },
+        { "t": "tracking", "w": 2 },
         { "t": "pending", "w": 2 },
-        { "t": "stuck", "w": 2 },
+        { "t": "stuck", "w": 3 },
         { "t": "scan", "w": 2 },
-        { "t": "scans", "w": 2 }
+        { "t": "scans", "w": 2 },
+        { "t": "update", "w": 1 },
+        { "t": "updates", "w": 1 }
       ],
       "phrases": [
-        { "t": "tracking hasn't moved", "w": 4 },
-        { "t": "no scans", "w": 4 },
-        { "t": "no updates", "w": 3 },
-        { "t": "stuck in transit", "w": 4 }
+        { "t": "tracking hasn't moved", "w": 5 },
+        { "t": "tracking has been stuck", "w": 5 },
+        { "t": "no scans", "w": 5 },
+        { "t": "no updates", "w": 4 },
+        { "t": "stuck in transit", "w": 4 },
+        { "t": "stuck on", "w": 3 },
+        { "t": "label created", "w": 2 }
       ],
       "regex": [
-        { "t": "\\bno\\s+scan(s)?\\b", "w": 4 },
-        { "t": "\\bno\\s+update(s)?\\b.*\\b(\\d+)\\s+day(s)?\\b", "w": 4 }
+        { "t": "\\bno\\s+scan(s)?\\b", "w": 5 },
+        { "t": "\\bno\\s+update(s)?\\b", "w": 4 },
+        { "t": "\\bstuck\\b.*\\b(\\d+)\\s+day(s)?\\b", "w": 5 },
+        { "t": "\\bno\\s+update(s)?\\b.*\\b(\\d+)\\s+day(s)?\\b", "w": 5 }
       ],
       "exclusions": [],
       "dominates": ["LateDelivery"],
@@ -101,18 +108,28 @@
       "id": "DeliveredNotReceived",
       "displayName": "Delivered but Not Received",
       "priority": 110,
-      "threshold": 6,
+      "threshold": 5,
       "keywords": [
-        { "t": "delivered", "w": 2 },
-        { "t": "received", "w": 2 }
+        { "t": "delivered", "w": 3 },
+        { "t": "received", "w": 2 },
+        { "t": "carrier", "w": 1 },
+        { "t": "marked", "w": 1 }
       ],
       "phrases": [
-        { "t": "delivered but not received", "w": 7 },
-        { "t": "says delivered", "w": 3 },
-        { "t": "marked as delivered", "w": 4 }
+        { "t": "delivered but not received", "w": 8 },
+        { "t": "says delivered", "w": 4 },
+        { "t": "marked as delivered", "w": 5 },
+        { "t": "marked my package as delivered", "w": 6 },
+        { "t": "nothing was at", "w": 4 },
+        { "t": "nowhere to be found", "w": 4 },
+        { "t": "not at my door", "w": 4 },
+        { "t": "not in mailbox", "w": 4 }
       ],
       "regex": [
-        { "t": "\\bdeliver(ed)?\\b.*\\bnot\\s+receiv(ed)?\\b", "w": 7 }
+        { "t": "\\bdeliver(ed)?\\b.*\\bnot\\s+receiv(ed)?\\b", "w": 8 },
+        { "t": "\\bmarked\\b.*\\bdeliver(ed)?\\b", "w": 5 },
+        { "t": "\\bdeliver(ed)?\\b.*\\bnothing\\b", "w": 6 },
+        { "t": "\\bdeliver(ed)?\\b.*\\bnowhere\\b", "w": 6 }
       ],
       "exclusions": ["LateDelivery"],
       "dominates": ["LateDelivery", "TrackingStalled"],
@@ -120,6 +137,11 @@
         {
           "type": "all_of_phrases",
           "phrases": ["delivered", "not received"],
+          "emitScore": 10
+        },
+        {
+          "type": "all_of_phrases",
+          "phrases": ["marked", "delivered", "nothing"],
           "emitScore": 10
         }
       ]
@@ -130,21 +152,29 @@
       "priority": 105,
       "threshold": 5,
       "keywords": [
-        { "t": "missing", "w": 3 },
+        { "t": "missing", "w": 4 },
         { "t": "incomplete", "w": 3 },
         { "t": "partial", "w": 2 },
-        { "t": "short", "w": 2 }
+        { "t": "short", "w": 2 },
+        { "t": "items", "w": 1 },
+        { "t": "order", "w": 1 }
       ],
       "phrases": [
-        { "t": "missing items", "w": 5 },
+        { "t": "missing items", "w": 6 },
+        { "t": "items were missing", "w": 6 },
+        { "t": "items from my order were missing", "w": 7 },
         { "t": "incomplete order", "w": 5 },
         { "t": "did not receive", "w": 3 },
         { "t": "only received", "w": 3 },
-        { "t": "order was incomplete", "w": 4 }
+        { "t": "order was incomplete", "w": 4 },
+        { "t": "two items", "w": 2 },
+        { "t": "packing slip", "w": 1 }
       ],
       "regex": [
-        { "t": "\\bmissing\\b.*\\bitem(s)?\\b", "w": 5 },
-        { "t": "\\bincomplete\\b.*\\border\\b", "w": 5 }
+        { "t": "\\bmissing\\b.*\\bitem(s)?\\b", "w": 6 },
+        { "t": "\\bitem(s)?\\b.*\\bmissing\\b", "w": 6 },
+        { "t": "\\bincomplete\\b.*\\border\\b", "w": 5 },
+        { "t": "\\b(\\d+)\\s+item(s)?\\b.*\\bmissing\\b", "w": 7 }
       ],
       "exclusions": ["DeliveredNotReceived"],
       "dominates": [],
