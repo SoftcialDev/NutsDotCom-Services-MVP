@@ -53,4 +53,3 @@ jobs:
           app-name: 'complaint-analysis'
           slot-name: 'staging'
           package: './output'
-          
